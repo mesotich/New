@@ -11,6 +11,7 @@ public class AmigoSet<E> extends AbstractSet<E> implements Serializable, Cloneab
     private static final Object PRESENT = new Object();
     private transient HashMap<E, Object> map;
 
+
     public AmigoSet() {
         this.map = new HashMap<>();
     }
