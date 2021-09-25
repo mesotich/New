@@ -1,31 +1,31 @@
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /*
-Несколько суперклассов для дженерика
+Простой generics
 */
 
-import java.util.List;
+public class Solution<T extends HashMap<?, ?>> {
+    private T map;
 
-public class Solution<T extends ClassForGenerics & InterfaceForGenerics> {
+    public Solution(T map) {
+        this.map = map;
+    }
+
+    public T getMap() {
+        return map;
+    }
+
     public static void main(String[] args) {
-        Solution<TestClassGood> testClassSolution = new Solution<>();
-        testClassSolution.check();
-//!!! Следующие оба варианта не должны работать, закомментируй их:
-        //Solution<TestClassWrong1> wrong1Solution = new Solution<>();
-        //wrong1Solution.check();
-        //Solution<TestClassWrong2> wrong2Solution = new Solution<>();
-        //wrong2Solution.check();
-    }
-
-    public void check() {
-        System.out.println("Works!");
-    }
-
-    public static class TestClassGood extends ClassForGenerics implements InterfaceForGenerics {
-    }
-
-    public static class TestClassWrong1 extends ClassForGenerics {
-    }
-
-    public static class TestClassWrong2 implements InterfaceForGenerics {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("string", 4);
+        Solution<HashMap<String, Integer>> solution = new Solution(hashMap);
+        HashMap mapFromSolution = solution.getMap();
+        System.out.println(mapFromSolution.getClass());
+        LinkedHashMap<Solution, Solution> hashMap2 = new LinkedHashMap<>();
+        hashMap2.put(solution, solution);
+        Solution solution2 = new Solution(hashMap2);
+        LinkedHashMap mapFromSolution2 = (LinkedHashMap) solution2.getMap(); //need to cast :(
+        System.out.println(mapFromSolution2.getClass());
     }
 }
