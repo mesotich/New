@@ -1,31 +1,27 @@
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
+import java.util.stream.IntStream;
 
 /*
-Простой generics
+Collections & Generics
 */
 
-public class Solution<T extends HashMap<?, ?>> {
-    private T map;
-
-    public Solution(T map) {
-        this.map = map;
-    }
-
-    public T getMap() {
-        return map;
-    }
-
+public class Solution {
     public static void main(String[] args) {
-        HashMap<String, Integer> hashMap = new HashMap<>();
-        hashMap.put("string", 4);
-        Solution<HashMap<String, Integer>> solution = new Solution(hashMap);
-        HashMap mapFromSolution = solution.getMap();
-        System.out.println(mapFromSolution.getClass());
-        LinkedHashMap<Solution, Solution> hashMap2 = new LinkedHashMap<>();
-        hashMap2.put(solution, solution);
-        Solution solution2 = new Solution(hashMap2);
-        LinkedHashMap mapFromSolution2 = (LinkedHashMap) solution2.getMap(); //need to cast :(
-        System.out.println(mapFromSolution2.getClass());
+    }
+
+    public static <T> ArrayList<T> newArrayList(T... elements) {
+        return new ArrayList<T>(Arrays.asList(elements));
+    }
+
+    public static <T> HashSet<T> newHashSet(T... elements) {
+        return new HashSet<T>(Arrays.asList(elements));
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap(List<? extends K> keys, List<? extends V> values) {
+        HashMap<K, V> result = new HashMap<>();
+        if (keys.size() != values.size())
+            throw new IllegalArgumentException();
+        IntStream.range(0, keys.size()).forEach(i -> result.put(keys.get(i), values.get(i)));
+        return result;
     }
 }
