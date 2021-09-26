@@ -1,31 +1,46 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.ListIterator;
 
 /*
-List to Map
+
+Wildcards
+
 */
 
 public class Solution {
+    public static <D, H extends D, S extends H> void add(List<? super D> destinationList, List<? extends S> sourceList) {
+        ListIterator<D> destListIterator = (ListIterator<D>) destinationList.listIterator();
+        ListIterator<S> srcListIterator = (ListIterator<S>) sourceList.listIterator();
+        for (int i = 0; i < sourceList.size(); i++) {
+            destListIterator.add(srcListIterator.next());
+        }
+    }
+
     public static void main(String[] args) {
-        List<ConvertableUser> users = new ArrayList<>();
-        users.add(new ConvertableUser(234, "First User"));
-        users.add(new ConvertableUser(235, "Second User"));
-        users.add(new ConvertableUser(236, "Third User"));
-        Map<Integer, ConvertableUser> newMap = ConvertableUtil.convert(users);
-        System.out.println(newMap);
-//{236=ConvertableUser{id=236, name='Third User'},
-// 235=ConvertableUser{id=235, name='Second User'},
-// 234=ConvertableUser{id=234, name='First User'}}
-//////////////////////////////////////////////////////////
-        List<ConvertableBook> books = new ArrayList<>();
-        books.add(new ConvertableBook("First Book"));
-        books.add(new ConvertableBook("Second Book"));
-        books.add(new ConvertableBook("Third Book"));
-        Map<String, ConvertableBook> bookMap = ConvertableUtil.convert(books);
-        System.out.println(bookMap);
-//{Third Book=ConvertableBook{name='Third Book'},
-// First Book=ConvertableBook{name='First Book'},
-// Second Book=ConvertableBook{name='Second Book'}}
+        List<B> destination = new ArrayList<>();
+        destination.add(new B());
+        List<C> source = new ArrayList<>();
+        source.add(new C());
+        add(destination, source);
+        System.out.println(destination);
+        System.out.println(source);
+
+/*
+
+[com.javarush.test.level39.lesson08.task01.Solution$C@203b4f0e, com.javarush.test.level39.lesson08.task01.Solution$B@15c330aa]
+
+[com.javarush.test.level39.lesson08.task01.Solution$C@203b4f0e]
+
+*/
+    }
+
+    static class A {
+    }
+
+    static class B extends A {
+    }
+
+    static class C extends B {
     }
 }
