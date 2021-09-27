@@ -9,9 +9,9 @@ Wildcards
 */
 
 public class Solution {
-    public static <D, H extends D, S extends H> void add(List<? super D> destinationList, List<? extends S> sourceList) {
-        ListIterator<D> destListIterator = (ListIterator<D>) destinationList.listIterator();
-        ListIterator<S> srcListIterator = (ListIterator<S>) sourceList.listIterator();
+    public static <D, H extends D, S extends H> void add(List<? super H> destinationList, List<? extends H> sourceList) {
+        ListIterator<? super H> destListIterator = destinationList.listIterator();
+        ListIterator<? extends H> srcListIterator = sourceList.listIterator();
         for (int i = 0; i < sourceList.size(); i++) {
             destListIterator.add(srcListIterator.next());
         }
