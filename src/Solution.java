@@ -1,17 +1,47 @@
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /*
-
-extends vs super
-
+Wildcards для коллекций
 */
 
-public abstract class Solution {
-    public abstract <T> void one(List<T> destination, List<T> source);
+public class Solution {
+    public static void main(String[] args) {
+    }
 
-    public abstract <T> void two(List<T> destination, List<? extends T> source);
+    public static Double sum(List<? extends Number> list) {
+        Double result = 0.0;
+        for (int i = 0; i < list.size(); i++) {
+            Number numb = list.get(i);
+            result += numb.doubleValue();
+        }
+        return result;
+    }
 
-    public abstract <T> void three(List<? super T> destination, List<T> source);
+    public static Double multiply(List<? extends Number> list) {
+        Double result = 1.0;
+        for (int i = 0; i < list.size(); i++) {
+            Number numb = list.get(i);
+            result *= numb.doubleValue();
+        }
+        return result;
+    }
 
-    public abstract <T> void four(List<? super T> destination, List<? extends T> source);
+    public static String concat(List<?> list) {
+        StringBuilder builder = new StringBuilder();
+        for (Object obj : list) {
+            builder.append(obj);
+        }
+        return builder.toString();
+    }
+
+    public static List combine(List<? extends Collection> list) {
+        List result = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Collection collection = list.get(i);
+            result.addAll(collection);
+        }
+        return result;
+    }
 }
