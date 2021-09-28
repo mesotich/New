@@ -2,6 +2,8 @@ package com.javarush.task.task35.task3507;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,7 +40,7 @@ public class Solution {
                     @Override
                     public Class<?> findClass(String className) throws ClassNotFoundException {
                         try {
-                            byte[] b = fetchClassFromFS(finalPathToAnimals + className + ".class");
+                            byte[] b = Files.readAllBytes(Path.of(finalPathToAnimals + className + ".class"));
                             return defineClass(null, b, 0, b.length);
                         } catch (FileNotFoundException ex) {
                             return super.findClass(className);
@@ -65,35 +67,10 @@ public class Solution {
                     }
                 }
                 if (!hasConstructor) continue;
-                result.add((Animal) clazz.newInstance());
+                result.add((Animal) clazz.getConstructor().newInstance());
             } catch (Exception e) {
             }
         }
         return result;
-    }
-
-    private static byte[] fetchClassFromFS(String path) throws IOException {
-        InputStream is = new FileInputStream(new File(path));
-// Get the size of the file
-        long length = new File(path).length();
-        if (length > Integer.MAX_VALUE) {
-// File is too large
-        }
-// Create the byte array to hold the data
-        byte[] bytes = new byte[(int) length];
-// Read in the bytes
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-            offset += numRead;
-        }
-// Ensure all the bytes have been read in
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file " + path);
-        }
-// Close the input stream and return bytes
-        is.close();
-        return bytes;
     }
 }
