@@ -12,4 +12,6 @@ public interface View extends PropertyChangeListener {
     void printGetSign();
 
     void printResult();
+
+
 }
