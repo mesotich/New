@@ -1,8 +1,9 @@
 package solution;
 
 public class View {
+    private final Controller controller = new Controller();
+
     public void fireShowDataEvent() {
-        Controller controller = new Controller();
         System.out.println(controller.onShowDataList());
     }
 }
