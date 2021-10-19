@@ -1,48 +1,40 @@
 package solution;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.*;
-import java.util.stream.Collectors;
-
-
-
-/*
-Найти класс по описанию Ӏ Java Collections: 6 уровень, 6 лекция
-*/
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Solution {
     public static void main(String[] args) {
-        System.out.println(getExpectedClass());
+        print5letters(intSet(args[0]));
     }
 
-    public static Class<?> getExpectedClass() {
-        List<Class<?>> classList = new ArrayList<>(Arrays.asList(Collections.class.getDeclaredClasses()));
-        for (int i = 0; i < classList.size(); i++) {
-            Class<?>[] classes = classList.get(i).getDeclaredClasses();
-            if (classes.length != 0) {
-                classList.addAll(Arrays.asList(classes));
+    private static Set<Character> intSet(String fileName) {
+        Set<Character> result = new TreeSet<>();
+        try {
+            byte[] bytes = Files.readAllBytes(Paths.get(fileName));
+            String string = new String(bytes).toLowerCase();
+            for (char ch : string.toCharArray()
+            ) {
+                if (ch >= 97 && ch <= 122)
+                    result.add(ch);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        classList = classList.stream()
-                .filter(List.class::isAssignableFrom)
-                .filter(a -> Modifier.isPrivate(a.getModifiers()))
-                .filter(a -> Modifier.isStatic(a.getModifiers()))
-                .collect(Collectors.toList());
-        for (Class<?> cl : classList
-        ) {
-            try {
-                Method method = cl.getMethod("get", int.class);
-                method.setAccessible(true);
-                Constructor<?> constructor = cl.getDeclaredConstructor();
-                constructor.setAccessible(true);
-                method.invoke(constructor.newInstance(), 1);
-            } catch (Exception e) {
-                if (e.getCause() instanceof IndexOutOfBoundsException)
-                    return cl;
-            }
-        }
-        return null;
+        return result;
+    }
+
+    private static void print5letters(Set<Character> set) {
+        set.stream()
+                .limit(5)
+                .forEach(System.out::print);
+        System.out.println();
     }
 }
+
+
+
+
